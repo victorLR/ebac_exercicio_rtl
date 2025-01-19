@@ -1,23 +1,28 @@
 import { FormEvent, useState } from 'react';
-import styles from './PostComments.module.css';
+import styles from './PostComments.module.css'; 
 
-import Comment from '../../models/Comment';
+import Comment from '../../models/Comment';  
 
-const Post = () => {
-    const [comments, setComments] = useState<Comment[]>([]);
-    const [tempComment, setTempComment] = useState('');
+type Props = {
+    children: React.ReactNode; 
+}
 
-    function handleAddComment(event: FormEvent<HTMLFormElement>) {
+const Post = ({ children }: Props) => {
+    const [coments, setComents] = useState<Comment[]>([]);
+    const [tempComent, setTempComent] = useState('');
+
+    function handleAddComent(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        const newComment = new Comment(comments.length, tempComment);
-        setTempComment('');
-        setComments([...comments, newComment]);
+        const newComent = new Comment(coments.length, tempComent);
+        setTempComent('');
+        setComents([...coments, newComent]);
     }
 
     return (
         <div>
-            <ul className={styles['post-comments']}>
-                {comments.map(({ comment, id }) => (
+            <p className={styles['post-text']}>{children}</p>
+            <ul className={styles['post-coments']}>
+                {coments.map(({ comment, id }) => (
                     <li className={styles['post-comment']} key={id}>
                         <p className={styles['post-comment-content']}>
                             {comment}
@@ -25,8 +30,14 @@ const Post = () => {
                     </li>
                 ))}
             </ul>
-            <form onSubmit={handleAddComment} className={styles['post-comments-form']}>
-                <textarea value={tempComment} onChange={e => setTempComment(e.target.value)} required className={styles['post-comments-form-textarea']} />
+            <form onSubmit={handleAddComent} className={styles['post-coments-form']} data-testid="form">
+                <textarea 
+                    value={tempComent} 
+                    onChange={e => setTempComent(e.target.value)} 
+                    required 
+                    className={styles['post-comments-form-textarea']} 
+                    data-testid="textarea"
+                />
                 <button type="submit" className={styles['post-comments-form-button']}>
                     Comentar
                 </button>
